@@ -2,56 +2,7 @@ const HttpError = require('../models/http-error');
 const bcrypt = require('bcryptjs');
 const { validationResult } = require('express-validator')
 const jwt = require('jsonwebtoken');
-const DUMMY_PLACES = [
-    {
-        id: 'p1',
-        title: 'Empire State Building',
-        description: 'One of the most famous sky scrapers in the world!',
-        location: {
-            lat: 40.7484474,
-            lng: -73.9871516
-        },
-        address: '20 W 34th St, New York, NY 10001',
-        creator: 'u1'
-    }
-];
 const users = require('../models/userSchema')
-
-const getPlaceById = (req, res, next) => {
-    const id = req.params.id;
-    const place = DUMMY_PLACES.find(p => {
-        return p.id === id;
-    });
-    if (!place) {
-        throw new HttpError('Could not find a place for the provided id.', 404);
-    }
-    res.json({ place });
-};
-
-//isEmpty(): boolean @returns — true if there are no errors, false otherwise
-const addPlace = (req, res, next) => {
-    const errors = validationResult(req)
-
-    if (!errors.isEmpty()) {
-        console.log(errors);
-        throw new HttpError('Invalid inputs passed,please check your data', 422)
-    }
-    const { title, description, coordinates, address, creator }
-        = req.body;
-    const createdPlace = {
-
-        title,
-        description,
-        location: coordinates,
-        address,
-        creator
-    };
-    DUMMY_PLACES.push(createdPlace);
-    res.status(201).json({ place: createdPlace });
-
-
-
-}
 
 
 const DUMMY_USERS = [
@@ -149,7 +100,7 @@ const register = async (req, res, next) => {
     const newUser = new users({
         name,
         email,
-        image: "",
+        image: req.file.filename,
         password: hashedPassword,
         places: []
     })
@@ -263,8 +214,6 @@ module.exports = {
     getUsers,
     login,
     signup,
-    addPlace,
-    getPlaceById,
     register,
     signin,
     getUserslist

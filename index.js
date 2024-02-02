@@ -22,6 +22,8 @@ const userRoutes = require('./routes/user-routes')
 
 server.use(userRoutes)
 
+server.use('/uploads',express.static('./uploads'))
+
 server.use((req, res, next) => {
     //new HttpError(message: any, errorCode: any)
     const error = new HttpError('Could not find this route ', 404)

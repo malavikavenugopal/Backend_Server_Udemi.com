@@ -2,7 +2,8 @@ const express = require('express')
 
 const HttpError = require('../models/http-error');
 const { check } = require('express-validator')
-
+const multerMiddleware = require('../middleware/multerMiddleware');
+const jwtMiddleware = require('../middleware/jwtMiddleware')
 const router = express.Router();
 const placeController = require('../controllers/placeController')
 router.get('/get', (req, res, next) => {
@@ -94,12 +95,22 @@ placeController.updatePlace)
 //deleting 
 router.delete("/delete/:pid",placeController.deletePlace)
 
-router.post('/addplace',placeController.addPlace)
+
+router.post('/addplace',jwtMiddleware,multerMiddleware.single('image'),
+[
+  check('title')
+    .not()
+    .isEmpty(),
+  check('description').isLength({ min: 5 }),
+  check('address')
+    .not()
+    .isEmpty()
+],placeController.addPlace)
 
 router.get('/getplace/:id',placeController.getplacebyid)
 
-router.patch('/updateplace/:id',placeController.updateplacebyid)
+router.patch('/updateplace/:id',jwtMiddleware,placeController.updateplacebyid)
 
-router.delete('/deleteplace/:id',placeController.deleteplacebyid)
+router.delete('/deleteplace/:id',jwtMiddleware,placeController.deleteplacebyid)
 
 module.exports = router;
