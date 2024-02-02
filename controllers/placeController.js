@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 const users = require('../models/userSchema')
 let DUMMY_PLACES = [
     {
@@ -139,6 +141,8 @@ const updateplacebyid = async (req, res, next) => {
             500
         ));
     }
+
+    
     if (place.creator.toString() !== req.payload) {
 
         return next(new HttpError('You are not allowed to edit this place.', 401));
@@ -163,6 +167,7 @@ const updateplacebyid = async (req, res, next) => {
 const deleteplacebyid = async (req, res, next) => {
 
     const id = req.params.id
+
     let place;
     try {
         place = await places.findById(id)
@@ -179,8 +184,11 @@ const deleteplacebyid = async (req, res, next) => {
 
         return next(new HttpError('You are not allowed to delete this place.', 401));
     }
+    const path = place.image;
+    
     try {
         await places.findOneAndDelete({ _id: id })
+        
     }
     catch (err) {
         console.log(err);
@@ -190,6 +198,12 @@ const deleteplacebyid = async (req, res, next) => {
         );
         return next(error);
     }
+//deleting images when places get removed
+    fs.unlink(path, err => {
+        console.log(err);
+      });
+
+
     res.status(200).json({ message: "Deleted" })
 
 }

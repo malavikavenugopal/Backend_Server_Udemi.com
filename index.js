@@ -1,5 +1,6 @@
 const express = require("express")
 
+const cookieParser = require('cookie-parser')
 const mongoose = require("mongoose")
 
 const bodyParser = require("body-parser")
@@ -10,6 +11,8 @@ const cors = require('cors')
 const server = express()
 
 server.use(cors())
+
+server.use(cookieParser())
 
 server.use(express.json())
 
@@ -39,6 +42,7 @@ server.use((error, req, res, next) => {
     res.status(error.code || 500)
     res.json({ message: error.message || 'An unknown error occurred!' });
 })
+
 
 //mongoose.ConnectOptions | undefined): Promise<typeof mongoose>
 mongoose.connect('mongodb+srv://malavikavenu914:snjy5678@cluster0.8duiran.mongodb.net/mern?retryWrites=true&w=majority').then(() => {

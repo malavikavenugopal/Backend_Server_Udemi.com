@@ -26,4 +26,27 @@ router.post("/register", multerMiddleware.single('image'), [
 router.post('/signin', userControllers.signin)
 router.get('/userslist', userControllers.getUserslist)
 
+
+
+//cookies
+
+//cookie(name: string, val: string, options: CookieOptions)
+
+router.get('/set-cookie', (req, res) => {
+    
+    res.cookie('fizz', 'buzz')
+    console.log(req.cookies)
+    res.send('Cookies are set')
+  })
+  
+ router.get('/get-cookie', (req, res) => {
+    console.log(req.cookies)
+    res.send(req.cookies)
+  })
+  
+  router.get('/del-cookie', (req, res) => {
+    res.clearCookie('fizz')
+    res.send('Cookie has been deleted')
+  })
+  
 module.exports = router;
