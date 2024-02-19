@@ -27,6 +27,6 @@ router.get('/',jwtMiddleware,petController.getPetsbyId)
 router.patch('/edit/:id',jwtMiddleware,petController.editPet)
 
 //delete pet
-router.delete('/delete/:id',petController.deletePet)
+router.delete('/delete/:id',jwtMiddleware,petController.deletePet)
 
 module.exports = router;

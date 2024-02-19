@@ -20,7 +20,9 @@ server.use('/users',userRoutes)
 const petRoutes = require('./router/pet-routes')
 server.use('/pets',petRoutes)
 
-
+//Product Router
+const productRoutes= require('./router/product-routes')
+server.use('/products', productRoutes)
 
 server.use('/uploads',express.static('./uploads'))
 

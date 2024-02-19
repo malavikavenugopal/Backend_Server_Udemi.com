@@ -23,5 +23,7 @@ router.post('/signin', userController.signin)
 router.get('/', userController.getUsers)
 //Get All Users
 router.get('/id',jwtMiddleware, userController.getUserbyId)
+//Forget Password
+router.post('/forget-password',userController.forgetPassword)
 
 module.exports = router;

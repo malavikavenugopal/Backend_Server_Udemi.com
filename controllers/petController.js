@@ -37,7 +37,7 @@ const postPets = async (req, res, next) => {
     }
     catch (err) {
         const error = new HttpError(
-            'Posting pet failed,Please try again later',
+            'Posting new pet failed,Please try again later',
             500
         );
         console.log(err);
@@ -116,8 +116,22 @@ const editPet = async (req,res,next)=>{
 
 //deleting pets info
 const deletePet =  async(req,res)=>{
-
+    let pet;
+    try{
+        await pets.findOneAndDelete({ _id: req.params.id })
+        res.status(200).json({message:"Deleted"})
+    }
+    catch (err) {
+        console.log(err)
+        const error = new HttpError(
+            'Something went wrong, could not delete the pet',
+            500
+        );
+        return next(error);
+    }
 }
+
+
 
 module.exports = {
     postPets,

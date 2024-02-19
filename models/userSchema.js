@@ -19,6 +19,10 @@ const userSchema = new  mongoose.Schema({
     address:{
         type: String,
         require: true
+    },
+    token:{
+        type:String,
+        default:""
     }
 })
 

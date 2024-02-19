@@ -8,6 +8,47 @@ const jwt = require('jsonwebtoken');
 
 const users = require('../models/userSchema')
 
+const nodemailer = require('nodemailer')
+
+const randomstring = require('randomstring')
+
+/* 
+const sendResetPasswordMail= async(name,email,token)=>{
+
+    try{
+        const transporter = nodemailer.createTransport({
+            service : 'Gmail',
+            auth : {
+                user : 'malavikavenu914@gmail.com',
+                pass : 'malusnjy'
+            }
+        });
+
+        const mail_option = {
+            from : 'malavikavenu914@gmail.com',
+            to: email,
+            subject : 'For Reset Password - Pet Care',
+            html:`<p>   Hii ${name} , please copy the link & <a href='http://localhost:4000/users/reset-password?token=${token}'> Reset your password</a></p>`
+        };
+
+        transporter.sendMail(mail_option, function(error, info){
+            if(error)
+            {
+                console.log(error);
+            }
+            else
+            {
+               console.log("Mail has been sent:",info.response);
+            }
+        });
+
+    }
+    catch(err){
+        res.status(400).json(err)
+    }
+}
+ */
+
 //Registeration of Users
 const register = async (req, res, next) => {
 
@@ -183,11 +224,37 @@ const getUserbyId =  async (req,res) =>{
         console.log(err)
     }
 }
+const forgetPassword = async(req,res,next)=>{
+    const { email} = req.body;
+    let existingUser;
+    try {
+        existingUser = await users.findOne({ email })
+     
+        if(existingUser){
+            const randomString = randomstring.generate()
+            const data=await users.updateOne({email:email},{$set:{token:randomString}})
+           
+            sendResetPasswordMail(existingUser.name,existingUser.email,randomString)
+            res.status(200).json({message:"Please check your inbox of mail and reset your password"})
+        }
+        else{
+            res.status(200).json({message:"Email does not exists"})
+        }
 
+    }
+    catch (err) {
+        const error = new HttpError(
+            'Forgetpassword request failed',
+            500
+        );
+        return next(error)
+    }
+} 
 module.exports = {
     register,
     signin,
     getUsers,
-    getUserbyId
+    getUserbyId,
+    forgetPassword
 }
 
