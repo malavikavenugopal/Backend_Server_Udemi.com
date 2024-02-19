@@ -1,16 +1,15 @@
-//import Multer
 
 const multer = require('multer')
 
 const storage = multer.diskStorage({
    
     destination:(req,file,callback)=>{
-        callback(null,'./uploads') // it should be stored in uploads folder
+        callback(null,'./uploads') 
     },
     filename:(req,file,callback)=>{
       
       const filename = `image-${Date.now()}-${file.originalname}`
-      //to set the name
+     
       callback(null,filename)
     }
 })

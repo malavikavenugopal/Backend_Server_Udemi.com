@@ -1,67 +1,18 @@
 const HttpError = require('../models/http-error');
+
 const bcrypt = require('bcryptjs');
+
 const { validationResult } = require('express-validator')
+
 const jwt = require('jsonwebtoken');
+
 const users = require('../models/userSchema')
 
-
-const DUMMY_USERS = [
-    {
-        id: "1",
-        name: "Malavika",
-        email: "malavika@gmail.com",
-        password: "snjy5678"
-    },
-    {
-        id: "2",
-        name: "Athira",
-        email: "athira@gmail.com",
-        password: "athi5678"
-    }
-]
-
-const getUsers = (req, res, next) => {
-
-    res.status(200).json({
-        users: DUMMY_USERS
-    })
-
-}
-const signup = (req, res, next) => {
-    const errors = validationResult(req)
-
-    if (!errors.isEmpty()) {
-        console.log(errors);
-
-    }
-    const { id, name, email, password } = req.body;
-    console.log(id, name);
-    const createdUser = {
-
-        name,
-        email,
-        password
-    }
-    DUMMY_USERS.push(createdUser)
-
-    res.status(201).json({ user: createdUser })
-
-}
-const login = (req, res, next) => {
-
-    const { email, password } = req.body;
-    const identifiedUser = DUMMY_USERS.find(u => u.email === email);
-
-    if (!identifiedUser || identifiedUser.password !== password) {
-        throw new HttpError("Could not identify user,credentials seem to be wrong", 401)
-    }
-    res.status(200).json({ message: 'Logged in' })
-}
-
+//Registeration of Users
 const register = async (req, res, next) => {
 
     console.log('Inside Register Controller')
-    const { name, email, password } = req.body;
+    const { name, email, password ,address} = req.body;
     const errors = validationResult(req)
 
     if (!errors.isEmpty()) {
@@ -75,7 +26,7 @@ const register = async (req, res, next) => {
         const existingUser = await users.findOne({ email })
         if (existingUser) {
             const error = new HttpError(
-                'Signing up failed',
+                'Signing up failed,User already exists',
                 500
             );
             return next(error);
@@ -100,9 +51,8 @@ const register = async (req, res, next) => {
     const newUser = new users({
         name,
         email,
-        image: req.file.filename,
         password: hashedPassword,
-        places: []
+        address
     })
 
     try {
@@ -111,25 +61,26 @@ const register = async (req, res, next) => {
     catch (err) {
         console.log(err);
     }
+    
     let token;
     try {
         token = jwt.sign(
             { userId: newUser.id, email: newUser.email },
             'supersecret_dont_share',
-            //expressed in seconds or a string describing a time span zeit/ms. Eg: 60, "2 days", "10h", "7d"
             { expiresIn: '1h' }
         );
     } catch (err) {
         const error = new HttpError(
-            'Signing up failed, please try again later.',
-            500
+            'Signup failed',
+             500
         );
         return next(error);
     }
 
-    res.status(201).json({ userId: newUser.id, email: newUser.email, token: token })
+    res.status(201).json({ userId: newUser.id, email: newUser.email ,token :token})
 }
 
+//Logging of Users
 const signin = async (req, res, next) => {
     const { email, password } = req.body;
 
@@ -186,22 +137,19 @@ const signin = async (req, res, next) => {
         );
     } catch (err) {
         const error = new HttpError(
-            'Logging in failed',
-            500
+            'Login failed',
+             500
         );
         return next(error);
     }
 
-    res.status(200).json({
-        existingUser
-        , token: token
-    });
+    res.status(200).json({ existingUser,token: token });
 
     
 }
 
-
-const getUserslist = async (req, res) => {
+//Get all Users
+const getUsers = async (req, res) => {
     try {
         const userslist = await users.find()
         res.status(200).json(userslist)
@@ -212,12 +160,34 @@ const getUserslist = async (req, res) => {
     }
 
 }
+
+//Get Particular User by ID
+const getUserbyId =  async (req,res) =>{
+    try{
+        const id = req.payload
+        console.log(id)
+    
+        const existingUser = await users.findOne({ _id:id })
+        res.status(200).json(existingUser)
+        if (!existingUser) {
+            const error = new HttpError(
+                'Could not find user, please try again.',
+                500
+            );
+            return next(error);  
+        }
+        
+    }
+    catch (err) {
+        res.status(401).json('Could not find user, please try again')
+        console.log(err)
+    }
+}
+
 module.exports = {
-    getUsers,
-    login,
-    signup,
     register,
     signin,
-    getUserslist
+    getUsers,
+    getUserbyId
 }
 

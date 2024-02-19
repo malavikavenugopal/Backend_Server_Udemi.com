@@ -1,38 +1,35 @@
 const express = require("express")
 
-const cookieParser = require('cookie-parser')
 const mongoose = require("mongoose")
 
-const bodyParser = require("body-parser")
-
 const HttpError = require('./models/http-error')
+
 const cors = require('cors')
 
 const server = express()
 
 server.use(cors())
 
-server.use(cookieParser())
-
 server.use(express.json())
 
-const placesRoutes = require('./routes/places-routes')
+//User Router
+const userRoutes = require('./router/user-routes')
+server.use('/users',userRoutes)
 
-server.use(placesRoutes)
-//handling errors for unsupported routes
+//Pet Router
+const petRoutes = require('./router/pet-routes')
+server.use('/pets',petRoutes)
 
-const userRoutes = require('./routes/user-routes')
 
-server.use(userRoutes)
 
 server.use('/uploads',express.static('./uploads'))
 
 server.use((req, res, next) => {
-    //new HttpError(message: any, errorCode: any)
     const error = new HttpError('Could not find this route ', 404)
     throw error;
 })
-const PORT = 8000
+
+const PORT = 4000 || process.env.PORT
 
 //error handling
 server.use((error, req, res, next) => {
@@ -43,11 +40,10 @@ server.use((error, req, res, next) => {
     res.json({ message: error.message || 'An unknown error occurred!' });
 })
 
-
-//mongoose.ConnectOptions | undefined): Promise<typeof mongoose>
-mongoose.connect('mongodb+srv://malavikavenu914:snjy5678@cluster0.8duiran.mongodb.net/mern?retryWrites=true&w=majority').then(() => {
+mongoose.connect('mongodb+srv://malavikavenu914:snjy5678@cluster0.8duiran.mongodb.net/petcare?retryWrites=true&w=majority').then(() => {
     server.listen(PORT, () => {
         console.log(`Server running at Port ${PORT}`);
+        console.log('MongoDB connected successfully')
     })
 
 }).catch((err) => {

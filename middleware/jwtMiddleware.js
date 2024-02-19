@@ -1,9 +1,8 @@
-
 const jwt = require("jsonwebtoken")
 
 const HttpError = require('../models/http-error');
 
-const jwtmiddlewear = (req, res, next) => {
+const jwtmiddleware = (req, res, next) => {
 
 
     const token = req.headers['authorization'].split(' ')[1]// Authorization: 'Bearer TOKEN'
@@ -25,4 +24,4 @@ const jwtmiddlewear = (req, res, next) => {
     }
 
 }
-module.exports = jwtmiddlewear
+module.exports = jwtmiddleware

@@ -16,17 +16,10 @@ const userSchema = new  mongoose.Schema({
         require: true,
         minlength:6
     },
-   image: {
+    address:{
         type: String,
         require: true
-    },
-    places:
-    //one user can add multiple places
-    [{
-        type: mongoose.Types.ObjectId,
-        require: true,
-        ref:"placeSchema"
-    }]
+    }
 })
 
 const users=  mongoose.model("users",userSchema)
