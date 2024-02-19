@@ -16,8 +16,17 @@ router.post('/add', jwtMiddleware, multerConfig.single('image'), [
     check('age').not().isEmpty(),
     check('height').not().isEmpty(),
     check('weight').not().isEmpty(),
-    check('color').not().isEmpty()
+    check('color').not().isEmpty(),
+    check('info').not().isEmpty()
 ], petController.postPets)
 
+//get pets by owner id
+router.get('/',jwtMiddleware,petController.getPetsbyId)
+
+//edit pet info
+router.patch('/edit/:id',jwtMiddleware,petController.editPet)
+
+//delete pet
+router.delete('/delete/:id',petController.deletePet)
 
 module.exports = router;
