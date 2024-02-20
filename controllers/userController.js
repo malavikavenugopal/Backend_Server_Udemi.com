@@ -12,20 +12,21 @@ const nodemailer = require('nodemailer')
 
 const randomstring = require('randomstring')
 
-/* 
+ 
 const sendResetPasswordMail= async(name,email,token)=>{
 
     try{
         const transporter = nodemailer.createTransport({
-            service : 'Gmail',
+            host:'smtp.mailtrap.io',
+            port:2525,
             auth : {
-                user : 'malavikavenu914@gmail.com',
-                pass : 'malusnjy'
+                user : '9f2dae88b56d7b',
+                pass : 'cac446d79082d5'
             }
         });
 
         const mail_option = {
-            from : 'malavikavenu914@gmail.com',
+            from : 'Jonas <hello@jonas.io>',
             to: email,
             subject : 'For Reset Password - Pet Care',
             html:`<p>   Hii ${name} , please copy the link & <a href='http://localhost:4000/users/reset-password?token=${token}'> Reset your password</a></p>`
@@ -47,11 +48,10 @@ const sendResetPasswordMail= async(name,email,token)=>{
         res.status(400).json(err)
     }
 }
- */
 
 //Registeration of Users
 const register = async (req, res, next) => {
-
+    
     console.log('Inside Register Controller')
     const { name, email, password ,address} = req.body;
     const errors = validationResult(req)
@@ -224,6 +224,7 @@ const getUserbyId =  async (req,res) =>{
         console.log(err)
     }
 }
+//Forget Password
 const forgetPassword = async(req,res,next)=>{
     const { email} = req.body;
     let existingUser;
@@ -235,7 +236,11 @@ const forgetPassword = async(req,res,next)=>{
             const data=await users.updateOne({email:email},{$set:{token:randomString}})
            
             sendResetPasswordMail(existingUser.name,existingUser.email,randomString)
-            res.status(200).json({message:"Please check your inbox of mail and reset your password"})
+            res.status(200).json({message:"Please check your inbox of mail and reset your password",
+            token : randomString
+        })
+
+            
         }
         else{
             res.status(200).json({message:"Email does not exists"})
@@ -250,11 +255,61 @@ const forgetPassword = async(req,res,next)=>{
         return next(error)
     }
 } 
+
+//Reset-Password
+const resetPassword = async(req,res,next)=>{
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return next(
+            new HttpError('Invalid inputs passed, please check your data.', 422)
+        );
+    }
+    const token = req.query.token
+    const {password} = req.body
+    let existingUser;
+    try {
+        existingUser = await users.findOne({ token: token })
+        if(existingUser){
+            let hashedPassword;
+    try {
+        hashedPassword = await bcrypt.hash(password, 12);
+    } catch (err) {
+        const error = new HttpError(
+            'Please try again later',
+            500
+        );
+        return next(error);
+    }
+
+    existingUser.password = hashedPassword
+    existingUser.token= ""
+    try{
+        await existingUser.save()
+        res.status(200).json(existingUser)
+    }
+    catch(err){
+        console.log(err)
+        const error = new HttpError(
+            'Something went wrong, could not update the password',
+            500
+        );
+        return next(error);
+    }
+        }
+    }
+    catch(err){
+        console.log(err);
+    }
+    
+
+}
+
 module.exports = {
     register,
     signin,
     getUsers,
     getUserbyId,
-    forgetPassword
+    forgetPassword,
+    resetPassword
 }
 

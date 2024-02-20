@@ -25,5 +25,10 @@ router.get('/', userController.getUsers)
 router.get('/id',jwtMiddleware, userController.getUserbyId)
 //Forget Password
 router.post('/forget-password',userController.forgetPassword)
-
+//Reset Password
+router.patch('/reset-password', [
+   
+    check('password').isString().isLength({ min: 6 }).not().isLowercase().not().isUppercase().not().isNumeric().not().isAlpha(),
+   
+ ],userController.resetPassword)
 module.exports = router;

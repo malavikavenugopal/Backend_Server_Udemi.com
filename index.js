@@ -24,6 +24,11 @@ server.use('/pets',petRoutes)
 const productRoutes= require('./router/product-routes')
 server.use('/products', productRoutes)
 
+//Veterinary Router
+const veterinaryRoutes= require('./router/veterinary-routes')
+server.use('/veterinary', veterinaryRoutes)
+
+
 server.use('/uploads',express.static('./uploads'))
 
 server.use((req, res, next) => {
