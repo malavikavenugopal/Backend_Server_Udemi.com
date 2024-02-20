@@ -34,17 +34,22 @@ const postNewProduct = async (req, res, next) => {
             500
         );
         console.log(err);
+        return next(error); 
     }
 
 }
 
 //Getting all products
 const getAllProducts = async (req, res, next) => {
-    const searchKey = req.query.search
-    const query = {
-        name: {
-            $regex: req.query.search, $options: 'i'
-        }
+    const searchKey = req.query.search;
+    let query = {};
+
+    if (searchKey) {
+        query.$or = [
+            { name: { $regex: searchKey, $options: 'i' } },
+            { description: { $regex: searchKey, $options: 'i' } },
+            { brand: { $regex: searchKey, $options: 'i' } }
+        ];
     }
     try {
 
@@ -57,42 +62,55 @@ const getAllProducts = async (req, res, next) => {
             500
         );
         console.log(err);
+        return next(error); 
     }
 
 }
 
 //Get all Food Products
 const getAllFoodProducts = async (req, res, next) => {
+    const searchKey = req.query.search;
+    let query = { category: 'Food' };
+
+    if (searchKey) {
+        query.$or = [
+            { name: { $regex: searchKey, $options: 'i' } },
+            { description: { $regex: searchKey, $options: 'i' } },
+            { brand: { $regex: searchKey, $options: 'i' } }
+        ];
+    }
 
     try {
+        const allProducts = await products.find(query);
 
-        const allProducts = await products.find({category :'Food'})
-        
-
-        if(allProducts.length<=0){
-            res.status(200).json({status:200,message : "Sorry,No products found!",dataFound:false})
-            }
-            else{
-            res.status(200).json({dataFound:true,allProducts})
-            }
-
-    }
-    catch (err) {
-        const error = new HttpError(
-            'Something went wrong,Please try again later',
-            500
-        );
+        if (allProducts.length <= 0) {
+            res.status(200).json({ status: 200, message: "Sorry, no products found!", dataFound: false });
+        } else {
+            res.status(200).json({ dataFound: true, allProducts });
+        }
+    } catch (err) {
+        const error = new HttpError('Something went wrong, please try again later', 500);
         console.log(err);
+        return next(error);
     }
-
-}
+};
 
 //Get all Vet Products
 const getAllVetProducts = async (req, res, next) => {
     
+    const searchKey = req.query.search;
+    let query = { category: 'Vet' };
+    if (searchKey) {
+        query.$or = [
+            { name: { $regex: searchKey, $options: 'i' } },
+            { description: { $regex: searchKey, $options: 'i' } },
+            { brand: { $regex: searchKey, $options: 'i' } }
+        ];
+    }
+
     try {
 
-        const allProducts = await products.find({category :'Vet'})
+        const allProducts = await products.find(query)
         
 
         if(allProducts.length<=0){
@@ -109,6 +127,7 @@ const getAllVetProducts = async (req, res, next) => {
             500
         );
         console.log(err);
+        return next(error); 
     }
 
 }
@@ -117,11 +136,21 @@ const getAllVetProducts = async (req, res, next) => {
 const getAllAccessories = async (req, res, next) => {
    
 
+    const searchKey = req.query.search;
+    let query = { category: 'Accessories' };
+
+    if (searchKey) {
+        query.$or = [
+            { name: { $regex: searchKey, $options: 'i' } },
+            { description: { $regex: searchKey, $options: 'i' } },
+            { brand: { $regex: searchKey, $options: 'i' } }
+        ];
+    }
 
     
     try {
 
-        const allProducts = await products.find({category :'Accessories'})
+        const allProducts = await products.find(query)
         
 
         if(allProducts.length<=0){
@@ -138,16 +167,26 @@ const getAllAccessories = async (req, res, next) => {
             500
         );
         console.log(err);
+        return next(error); 
     }
 
 }
 //Get all Iot Devices
 const getAllIotDevices = async (req, res, next) => {
-   
+    const searchKey = req.query.search;
+    let query = { category: 'Iot-Devices' };
+
+    if (searchKey) {
+        query.$or = [
+            { name: { $regex: searchKey, $options: 'i' } },
+            { description: { $regex: searchKey, $options: 'i' } },
+            { brand: { $regex: searchKey, $options: 'i' } }
+        ];
+    }
     
     try {
 
-        const allProducts = await products.find({category :'Iot-Devices'})
+        const allProducts = await products.find(query)
         
         if(allProducts.length<=0){
             res.status(200).json({status:200,message : "Sorry,No products found!",dataFound:false})
@@ -162,7 +201,9 @@ const getAllIotDevices = async (req, res, next) => {
             'Something went wrong,Please try again later',
             500
         );
+      
         console.log(err);
+        return next(error); 
     }
 
 }

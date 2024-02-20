@@ -45,7 +45,8 @@ const sendResetPasswordMail= async(name,email,token)=>{
 
     }
     catch(err){
-        res.status(400).json(err)
+        console.error("Error occurred while sending reset password email:", err);
+        throw err;
     }
 }
 

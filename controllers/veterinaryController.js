@@ -67,8 +67,9 @@ const bookingAppointment = async (req, res,next) => {
             'Something went wrong,Please try again later',
             500
         );
-        return next(error)
+        
         console.log(err);
+        return next(error)
     }
 
 

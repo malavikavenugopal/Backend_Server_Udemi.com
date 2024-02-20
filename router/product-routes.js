@@ -4,7 +4,7 @@ const productController = require('../controllers/productController');
 
 const multerConfig = require('../middleware/multerMiddleware')
 
-/* const jwtMiddleware = require('../middleware/jwtMiddleware') */
+ const jwtMiddleware = require('../middleware/jwtMiddleware') 
 
 const { check } = require('express-validator')
 
@@ -22,19 +22,19 @@ router.post('/add', multerConfig.single('image'), [
 ], productController.postNewProduct)
 
 //get all products
-router.get('/all-products',productController.getAllProducts)
+router.get('/all-products',jwtMiddleware,productController.getAllProducts)
 
 //get all food products
-router.get('/all-food-products',productController.getAllFoodProducts)
+router.get('/all-food-products',jwtMiddleware,productController.getAllFoodProducts)
 
 //get all vet products
-router.get('/all-vet-products',productController.getAllVetProducts)
+router.get('/all-vet-products',jwtMiddleware,productController.getAllVetProducts)
 
 //get all accessories
-router.get('/all-accessories',productController.getAllAccessories)
+router.get('/all-accessories',jwtMiddleware,productController.getAllAccessories)
 
 //get all iot-devices
-router.get('/all-iot-devices',productController.getAllIotDevices)
+router.get('/all-iot-devices',jwtMiddleware,productController.getAllIotDevices)
 
 
 
