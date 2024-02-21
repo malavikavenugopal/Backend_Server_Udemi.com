@@ -36,6 +36,7 @@ router.get('/all-accessories',jwtMiddleware,productController.getAllAccessories)
 //get all iot-devices
 router.get('/all-iot-devices',jwtMiddleware,productController.getAllIotDevices)
 
-
+//get Particular Product
+router.get('/:id',jwtMiddleware,productController.getParticularProduct)
 
 module.exports = router;

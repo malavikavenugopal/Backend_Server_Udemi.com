@@ -34,7 +34,7 @@ const postNewProduct = async (req, res, next) => {
             500
         );
         console.log(err);
-        return next(error); 
+        return next(error);
     }
 
 }
@@ -62,7 +62,7 @@ const getAllProducts = async (req, res, next) => {
             500
         );
         console.log(err);
-        return next(error); 
+        return next(error);
     }
 
 }
@@ -97,7 +97,7 @@ const getAllFoodProducts = async (req, res, next) => {
 
 //Get all Vet Products
 const getAllVetProducts = async (req, res, next) => {
-    
+
     const searchKey = req.query.search;
     let query = { category: 'Vet' };
     if (searchKey) {
@@ -111,13 +111,13 @@ const getAllVetProducts = async (req, res, next) => {
     try {
 
         const allProducts = await products.find(query)
-        
 
-        if(allProducts.length<=0){
-        res.status(200).json({status:200,message : "Sorry,No products found!",dataFound:false})
+
+        if (allProducts.length <= 0) {
+            res.status(200).json({ status: 200, message: "Sorry,No products found!", dataFound: false })
         }
-        else{
-        res.status(200).json({dataFound:true,allProducts})
+        else {
+            res.status(200).json({ dataFound: true, allProducts })
         }
 
     }
@@ -127,14 +127,14 @@ const getAllVetProducts = async (req, res, next) => {
             500
         );
         console.log(err);
-        return next(error); 
+        return next(error);
     }
 
 }
 
 //Get all Accessories 
 const getAllAccessories = async (req, res, next) => {
-   
+
 
     const searchKey = req.query.search;
     let query = { category: 'Accessories' };
@@ -147,18 +147,18 @@ const getAllAccessories = async (req, res, next) => {
         ];
     }
 
-    
+
     try {
 
         const allProducts = await products.find(query)
-        
 
-        if(allProducts.length<=0){
-            res.status(200).json({status:200,message : "Sorry,No products found!",dataFound:false})
-            }
-            else{
-            res.status(200).json({dataFound:true,allProducts})
-            }
+
+        if (allProducts.length <= 0) {
+            res.status(200).json({ status: 200, message: "Sorry,No products found!", dataFound: false })
+        }
+        else {
+            res.status(200).json({ dataFound: true, allProducts })
+        }
 
     }
     catch (err) {
@@ -167,7 +167,7 @@ const getAllAccessories = async (req, res, next) => {
             500
         );
         console.log(err);
-        return next(error); 
+        return next(error);
     }
 
 }
@@ -183,17 +183,17 @@ const getAllIotDevices = async (req, res, next) => {
             { brand: { $regex: searchKey, $options: 'i' } }
         ];
     }
-    
+
     try {
 
         const allProducts = await products.find(query)
-        
-        if(allProducts.length<=0){
-            res.status(200).json({status:200,message : "Sorry,No products found!",dataFound:false})
-            }
-            else{
-            res.status(200).json({dataFound:true,allProducts})
-            }
+
+        if (allProducts.length <= 0) {
+            res.status(200).json({ status: 200, message: "Sorry,No products found!", dataFound: false })
+        }
+        else {
+            res.status(200).json({ dataFound: true, allProducts })
+        }
 
     }
     catch (err) {
@@ -201,10 +201,33 @@ const getAllIotDevices = async (req, res, next) => {
             'Something went wrong,Please try again later',
             500
         );
-      
+
         console.log(err);
-        return next(error); 
+        return next(error);
     }
+
+}
+
+//get Particular Product 
+const getParticularProduct = async (req, res, next) => {
+    const id = req.params.id
+    try {
+        const product = await products.findById(id)
+        if (!product) {
+            res.status(404).json({ message: 'Could not find product for the provided ID' })
+        }
+        res.status(200).json(product)
+    }
+    catch (err) {
+        const error = new HttpError(
+            'Something went wrong,Please try again later',
+            500
+        );
+
+        console.log(err);
+        return next(error);
+    }
+
 
 }
 
@@ -214,6 +237,7 @@ module.exports = {
     getAllVetProducts,
     getAllFoodProducts,
     getAllAccessories,
-    getAllIotDevices
+    getAllIotDevices,
+    getParticularProduct
 }
 

@@ -31,4 +31,7 @@ router.patch('/reset-password', [
     check('password').isString().isLength({ min: 6 }).not().isLowercase().not().isUppercase().not().isNumeric().not().isAlpha(),
    
  ],userController.resetPassword)
+
+ //logout
+ router.post('/logout',jwtMiddleware,userController.logout)
 module.exports = router;

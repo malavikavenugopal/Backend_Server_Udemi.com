@@ -15,6 +15,7 @@ const randomstring = require('randomstring')
 
 const sendResetPasswordMail = async (name, email, token) => {
 
+
     try {
         const transporter = nodemailer.createTransport({
             host: 'smtp.mailtrap.io',
@@ -25,28 +26,21 @@ const sendResetPasswordMail = async (name, email, token) => {
             }
         });
 
-        const mail_option = {
+        const mailOptions = {
             from: 'Jonas <hello@jonas.io>',
             to: email,
             subject: 'For Reset Password - Pet Care',
-            html: `<p>   Hii ${name} , please copy the link & <a href='http://localhost:4000/users/reset-password?token=${token}'> Reset your password</a></p>`
+            html: `<p>   Hii ${name}, please copy the link & <a href='http://localhost:4000/users/reset-password?token=${token}'> Reset your password</a></p>`
         };
 
-        transporter.sendMail(mail_option, function (error, info) {
-            if (error) {
-                console.log(error);
-            }
-            else {
-                console.log("Mail has been sent:", info.response);
-            }
-        });
-
-    }
-    catch (err) {
+        await transporter.sendMail(mailOptions);
+        console.log("Reset password email sent successfully.");
+    } catch (err) {
         console.error("Error occurred while sending reset password email:", err);
         throw err;
     }
 }
+
 
 //Registeration of Users
 const register = async (req, res, next) => {
@@ -92,7 +86,8 @@ const register = async (req, res, next) => {
         name,
         email,
         password: hashedPassword,
-        address
+        address,
+        token:null
     })
 
     try {
@@ -272,7 +267,7 @@ const resetPassword = async (req, res, next) => {
         if (!token) {
             return next(new HttpError('Token is required.', 422));
         }
-       existingUser = await users.findOne({ token: token })
+        existingUser = await users.findOne({ token: token })
         if (existingUser) {
             let hashedPassword;
             try {
@@ -282,7 +277,7 @@ const resetPassword = async (req, res, next) => {
             }
 
             existingUser.password = hashedPassword
-            existingUser.token = ""
+            existingUser.token = null
             try {
                 await existingUser.save()
                 res.status(200).json(existingUser)
@@ -292,7 +287,7 @@ const resetPassword = async (req, res, next) => {
                 return next(new HttpError('An error occurred while saving the updated password.', 500));
             }
         }
-        else{
+        else {
             return res.status(404).json({ message: 'User not found with this token.' });
         }
     }
@@ -304,12 +299,21 @@ const resetPassword = async (req, res, next) => {
 
 }
 
+const logout = async (req, res) => {
+  
+    res.status(200).json({ message: 'Logout successful' });
+};
+
+module.exports = { logout };
+
+
 module.exports = {
     register,
     signin,
     getUsers,
     getUserbyId,
     forgetPassword,
-    resetPassword
+    resetPassword,
+    logout
 }
 

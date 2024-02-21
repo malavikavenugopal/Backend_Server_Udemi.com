@@ -22,7 +22,7 @@ const userSchema = new  mongoose.Schema({
     },
     token:{
         type:String,
-        default:""
+        default:null
     }
 })
 

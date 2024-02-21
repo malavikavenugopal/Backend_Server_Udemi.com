@@ -28,6 +28,14 @@ server.use('/products', productRoutes)
 const veterinaryRoutes= require('./router/veterinary-routes')
 server.use('/veterinary', veterinaryRoutes)
 
+//Cart Router
+const cartRoutes= require('./router/cart-routes')
+server.use('/cart', cartRoutes)
+
+//Checkout Router
+const checkoutRoutes= require('./router/checkout-routes')
+server.use('/order', checkoutRoutes)
+
 
 server.use('/uploads',express.static('./uploads'))
 

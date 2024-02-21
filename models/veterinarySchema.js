@@ -6,6 +6,10 @@ const veterinarySchema = new  mongoose.Schema({
         type: String,
         require: true
     },
+    image:{
+            type: String,
+            require: true
+    },
     education:{
         type: String,
         require: true
@@ -29,11 +33,6 @@ const veterinarySchema = new  mongoose.Schema({
     info:{
         type: String,
         require: true
-    },
-    reviews:{
-        type: Array,
-        require: true,
-        default: []
     },
     location:{
         type:String,

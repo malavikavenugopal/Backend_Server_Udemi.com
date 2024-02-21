@@ -8,7 +8,7 @@ const jwtmiddleware = (req, res, next) => {
     const token = req.headers['authorization'].split(' ')[1]// Authorization: 'Bearer TOKEN'
     console.log(token)
     if (!token) {
-        throw new Error('Authentication failed!');
+        throw new Error('Authentication failed! No token provided.');
     }
     try {
         const jwtResponse = jwt.verify(token, "supersecret_dont_share")
