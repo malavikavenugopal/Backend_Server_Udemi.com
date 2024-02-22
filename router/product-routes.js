@@ -4,7 +4,7 @@ const productController = require('../controllers/productController');
 
 const multerConfig = require('../middleware/multerMiddleware')
 
- const jwtMiddleware = require('../middleware/jwtMiddleware') 
+const jwtMiddleware = require('../middleware/jwtMiddleware') 
 
 const { check } = require('express-validator')
 

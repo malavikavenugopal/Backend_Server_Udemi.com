@@ -15,11 +15,11 @@ const addToCart = async (req, res, next) => {
 
         const product = await products.findById(productId);
 
-        const price = product.price
+        
         if (!product) {
             res.status(404).json({ message: 'Could not find product for the provided ID' });
         }
-
+        const price = product.price
 
         let cart = await carts.findOne({ userId });
         if (!cart) {

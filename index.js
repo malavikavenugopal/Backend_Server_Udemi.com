@@ -36,6 +36,21 @@ server.use('/cart', cartRoutes)
 const checkoutRoutes= require('./router/checkout-routes')
 server.use('/order', checkoutRoutes)
 
+//Review Router
+const reviewRoutes= require('./router/review-routes')
+server.use('/review',reviewRoutes)
+
+//Board Router
+const boardRoutes= require('./router/board-routes')
+server.use('/board',boardRoutes)
+
+//Groom Router
+const groomRoutes= require('./router/groom-routes')
+server.use('/groom',groomRoutes)
+
+//Device Router
+const deviceRoutes= require('./router/device-routes')
+server.use('/device',deviceRoutes)
 
 server.use('/uploads',express.static('./uploads'))
 
