@@ -31,7 +31,7 @@ const addDoctor = async (req, res, next) => {
         });
 
         await newDoctor.save();
-        res.status(201).json(newDoctor);
+        res.status(201).json({status:true,message:"Successfully added",data:newDoctor});
     }
     catch (err) {
         console.log(err);
@@ -59,7 +59,7 @@ const getAllDoctors = async (req, res, next) => {
             res.status(200).json({ message: "Sorry,No doctors found!" })
         }
         else {
-            res.status(200).json(allDoctors)
+            res.status(200).json({status:true , dataFound:true,data:allDoctors})
         }
 
     }
@@ -97,7 +97,7 @@ const bookingAppointment = async (req, res, next) => {
         });
 
         await newAppointment.save();
-        res.status(201).json(newAppointment);
+        res.status(201).json({status:true,message:"Appointment booked",newAppointment});
 
 
     } catch (err) {
@@ -114,7 +114,7 @@ const getAppointmentbyId = async (req, res, next) => {
 
     try {
         const appointmentList = await appointments.find({ owner_Id })
-        res.status(200).json(appointmentList)
+        res.status(200).json({status:true ,dataFound:true,data :appointmentList})
 
     }
     catch (err) {
@@ -136,10 +136,12 @@ const getParticularAppointment = async (req, res, next) => {
         const doctor_Id = appointmentList.doctor_Id
         const doctor = await doctors.findOne({ _id: doctor_Id })
         res.status(200).json({
+            status:true,data :{
             Appointment_Id: appointmentList._id,
             Doctor_Name: doctor.name,
             consultingDate: appointmentList.consultingDate,
             consultingTime: appointmentList.consultingTime
+            }
         })
 
     }
@@ -157,7 +159,7 @@ const id = req.params.id
 
 try{
  const doctor = await doctors.findById(id)
- res.status(200).json({doctor})
+ res.status(200).json({status:true,dataFound:true,data:doctor})
 }
 catch (err) {
     console.error(err);

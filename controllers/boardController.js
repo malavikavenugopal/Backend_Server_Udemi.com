@@ -31,7 +31,7 @@ const createBoardingplaces = async (req, res, next) => {
         await newBoard.save();
 
 
-        res.status(201).json({ message: 'Boarding place created successfully', boardingPlace: newBoard });
+        res.status(201).json({ status: true, message: 'Boarding place created successfully', data: newBoard });
     } catch (error) {
 
         console.error(error);
@@ -52,7 +52,7 @@ const getAllBoardingPlaces = async (req, res, next) => {
             res.status(404).json({ message: "No Boarding Places Found!" })
         }
 
-        res.status(200).json(boardingPlaces);
+        res.status(200).json({ status: true, dataFound: true, data: boardingPlaces });
     } catch (err) {
 
         console.error('Error fetching boarding places:', err);
@@ -64,14 +64,14 @@ const getAllBoardingPlaces = async (req, res, next) => {
     }
 }
 //get a particular boarding place
-const getABoardingPlace = async (req, res, next)=>{
+const getABoardingPlace = async (req, res, next) => {
     const boardId = req.params.id
     try {
         const board = await boards.findById(boardId)
-        res.status(200).json({boardingPlace: board })
+        res.status(200).json({ status: true, dataFound: true, data: board })
     }
     catch (err) {
-    
+
         console.error('Error fetching boarding place:', err);
         const error = new HttpError(
             'Internal Server Error',

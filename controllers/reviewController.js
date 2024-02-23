@@ -34,7 +34,7 @@ const addDoctorReviews = async (req, res, next) => {
         });
 
         await newReview.save();
-        res.status(201).json({ message: 'Review posted successfully' });
+        res.status(201).json({status :true, message: 'Review posted successfully' });
     } catch (err) {
 
         console.error(err);
@@ -70,7 +70,9 @@ const getDoctorReviewsbyId = async (req, res, next) => {
         const averageRating = totalRating / allReviews.length;
 
 
-        res.status(201).json({ Doctor: doctor.name, Reviews: allReviews, Average_Rating: averageRating, No_Of_Reviews: allReviews.length });
+        res.status(201).json({
+            status:true,dataFound:true,data :{
+            Doctor: doctor.name, Reviews: allReviews, Average_Rating: averageRating, No_Of_Reviews: allReviews.length } });
     } catch (err) {
 
         console.error(err);
@@ -110,7 +112,7 @@ const addBoardReviews = async (req, res, next) => {
         });
 
         await newReview.save();
-        res.status(201).json({ message: 'Review posted successfully' });
+        res.status(201).json({status :true, message: 'Review posted successfully' });
     } catch (err) {
 
         console.error(err);
@@ -146,7 +148,7 @@ const getBoardReviewsbyId = async (req, res, next) => {
         const averageRating = totalRating / allReviews.length;
 
 
-        res.status(201).json({ Boarding_Place_Name: board.name, Reviews: allReviews, Average_Rating: averageRating, No_Of_Reviews: allReviews.length });
+        res.status(201).json({  status:true,dataFound:true,data :{ Boarding_Place_Name: board.name, Reviews: allReviews, Average_Rating: averageRating, No_Of_Reviews: allReviews.length} });
     } catch (err) {
 
         console.error(err);
@@ -186,7 +188,7 @@ const addGroomReviews = async (req, res, next) => {
         });
 
         await newReview.save();
-        res.status(201).json({ message: 'Review posted successfully' });
+        res.status(201).json({ status:true, message: 'Review posted successfully' });
     } catch (err) {
 
         console.error(err);
@@ -222,7 +224,10 @@ const getGroomReviewsbyId = async (req, res, next) => {
         const averageRating = totalRating / allReviews.length;
 
 
-        res.status(201).json({ Grooming_Place_Name:groom.name, Reviews: allReviews, Average_Rating: averageRating, No_Of_Reviews: allReviews.length });
+        res.status(201).json({  status:true,
+            dataFound:true,
+            data :{
+             Grooming_Place_Name:groom.name, Reviews: allReviews, Average_Rating: averageRating, No_Of_Reviews: allReviews.length} });
     } catch (err) {
 
         console.error(err);

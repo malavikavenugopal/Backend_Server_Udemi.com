@@ -32,7 +32,7 @@ const postPets = async (req, res, next) => {
         })
 
         await newPet.save()
-        res.status(200).json(newPet)
+        res.status(200).json({ status: true, message: "Successfully added", data: newPet })
 
     }
     catch (err) {
@@ -52,8 +52,8 @@ const getPetsbyId = async (req, res) => {
         const id = req.payload
         console.log(id)
 
-        const existingPets = await pets.findOne({ owner: id })
-        res.status(200).json(existingPets)
+        const existingPets = await pets.find({ owner: id })
+        res.status(200).json({ status: true, dataFound: true, data: existingPets })
         if (!existingPets) {
             const error = new HttpError(
                 'Could not find any pets',
@@ -75,32 +75,25 @@ const editPet = async (req, res, next) => {
 
     const { age, height, weight, info } = req.body
 
-    let pet;
+
     try {
+        let pet;
+
         pet = await pets.findById({ _id: req.params.id })
         console.log(pet);
-    }
-    catch (err) {
-        console.log(err);
-        return next(new HttpError(
-            'Could not find the pet',
-            500
-        ));
-    }
+        if (pet.owner.toString() !== owner_Id) {
 
-    if (pet.owner.toString() !== owner_Id) {
+            return next(new HttpError('You are not allowed to edit this pet info', 401));
+        }
 
-        return next(new HttpError('You are not allowed to edit this pet info', 401));
-    }
-
-    pet.age = age ? age : pet.age
-    pet.height = height ? height : pet.height
-    pet.weight = weight ? weight : pet.weight
-    pet.info = info ? info : pet.info
+        pet.age = age ? age : pet.age
+        pet.height = height ? height : pet.height
+        pet.weight = weight ? weight : pet.weight
+        pet.info = info ? info : pet.info
 
 
-    try {
         await pet.save();
+        res.status(200).json({ status: true, message: "Updated successfully", data: pet })
     }
     catch (err) {
         console.log(err)
@@ -110,7 +103,7 @@ const editPet = async (req, res, next) => {
         );
         return next(error);
     }
-    res.status(200).json(pet)
+
 
 }
 
@@ -119,7 +112,7 @@ const deletePet = async (req, res) => {
     let pet;
     try {
         await pets.findOneAndDelete({ _id: req.params.id })
-        res.status(200).json({ message: "Deleted" })
+        res.status(200).json({ status: true, message: "Deleted" })
     }
     catch (err) {
         console.log(err)

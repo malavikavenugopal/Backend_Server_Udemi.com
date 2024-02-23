@@ -8,6 +8,7 @@ const cors = require('cors')
 
 const server = express()
 
+
 server.use(cors())
 
 server.use(express.json())
@@ -70,7 +71,8 @@ server.use((error, req, res, next) => {
     res.json({ message: error.message || 'An unknown error occurred!' });
 })
 
-mongoose.connect('mongodb+srv://malavikavenu914:snjy5678@cluster0.8duiran.mongodb.net/petcare?retryWrites=true&w=majority').then(() => {
+
+ mongoose.connect('mongodb+srv://malavikavenu914:snjy5678@cluster0.8duiran.mongodb.net/petcare?retryWrites=true&w=majority').then(() => {
     server.listen(PORT, () => {
         console.log(`Server running at Port ${PORT}`);
         console.log('MongoDB connected successfully')
@@ -79,5 +81,4 @@ mongoose.connect('mongodb+srv://malavikavenu914:snjy5678@cluster0.8duiran.mongod
 }).catch((err) => {
     console.log(err);
 })
-
 

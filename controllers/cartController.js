@@ -15,10 +15,15 @@ const addToCart = async (req, res, next) => {
 
         const product = await products.findById(productId);
 
-        
+
         if (!product) {
             res.status(404).json({ message: 'Could not find product for the provided ID' });
         }
+        // Check if requested quantity exceeds available stock
+        if (quantity > product.quantity) {
+            return res.status(400).json({ message: 'Requested quantity exceeds available stock' });
+        }
+
         const price = product.price
 
         let cart = await carts.findOne({ userId });
@@ -34,10 +39,12 @@ const addToCart = async (req, res, next) => {
         } else {
             cart.items.push({ productId, quantity, price });
         }
-
+        // Update remaining quantity in products collection
+        product.quantity -= quantity;
+        await product.save();
         await cart.save();
 
-        res.status(201).json({ message: 'Product added to cart successfully', cart, No_of_Items: cart.items.length });
+        res.status(201).json({ status: true, message: 'Product added to cart successfully', data: cart, No_of_Items: cart.items.length });
     } catch (err) {
         console.log(err);
         const error = new HttpError('Could not add product to cart', 500)
@@ -55,7 +62,7 @@ const getCartItemsByUserId = async (req, res, next) => {
         if (!cart) {
             res.status(404).json({ message: 'Could not find cart for the provided user ID' });
         }
-        res.status(200).json({ cartItems: cart.items, No_of_cartItems: cart.items.length });
+        res.status(200).json({ status: true, dataFound: true, data: cart.items, No_of_cartItems: cart.items.length });
 
     } catch (err) {
 
@@ -85,12 +92,21 @@ const deleteCartItem = async (req, res, next) => {
         }
 
 
+        const removedItem = cart.items[itemIndex];
+
+        // Increment the product quantity in the products collection
+        const product = await products.findOne({ _id: removedItem.productId });
+        if (product) {
+            product.quantity += removedItem.quantity;
+
+            await product.save();
+        }
         cart.items.splice(itemIndex, 1);
 
 
         await cart.save();
 
-        res.status(200).json({ message: 'Item removed from cart successfully',cart});
+        res.status(200).json({ status: true, message: 'Item removed from cart successfully', data: cart });
     } catch (err) {
         console.log(err);
         const error = new HttpError('Could not delete item from cart', 500)

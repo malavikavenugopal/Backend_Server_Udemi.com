@@ -31,7 +31,7 @@ const createGroomingPlace = async (req, res, next) => {
         await newGroom.save();
 
 
-        res.status(201).json({ message: 'Grooming place created successfully', GroomingPlace: newGroom });
+        res.status(201).json({ status: true, message: 'Grooming place created successfully', data: newGroom });
     } catch (error) {
 
         console.error(error);
@@ -52,7 +52,7 @@ const getAllGroomingPlaces = async (req, res, next) => {
             res.status(404).json({ message: "No Grooming Places Found!" })
         }
 
-        res.status(200).json({ groomingPlaces });
+        res.status(200).json({ status: true, dataFound: true, data: groomingPlaces });
     } catch (err) {
 
         console.error('Error fetching grooming places:', err);
@@ -69,7 +69,7 @@ const getAGroomingPlace = async (req, res, next) => {
     const groomId = req.params.id
     try {
         const groom = await grooms.findById(groomId)
-        res.status(200).json({ GroomingPlace: groom })
+        res.status(200).json({ status: true, dataFound: true, data: groom })
     }
     catch (err) {
 

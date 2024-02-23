@@ -44,7 +44,7 @@ const checkout = async (req, res, next) => {
 
         await checkout.save();
         await carts.findByIdAndDelete(cartId)
-        res.status(201).json({ message: 'Checkout successful', checkout });
+        res.status(201).json({ status:true ,message: 'Checkout successful', data :checkout });
 
 
     } catch (err) {
@@ -65,7 +65,7 @@ const getOrdersByUserId = async (req, res, next) => {
             res.status(404).json({ message: "Could not find orders for the provided user ID" })
         }
 
-        res.status(200).json({ order });
+        res.status(200).json({ status:true,dataFound:true ,message :order });
     } catch (err) {
         console.log(err)
         const error = new HttpError('Could not get orders', 500);

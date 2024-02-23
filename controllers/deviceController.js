@@ -4,6 +4,7 @@ const { validationResult } = require('express-validator')
 
 const devices = require('../models/deviceSchema')
 
+
 //adding pet device
 const postingPetDevice = async (req, res, next) => {
     const userId = req.payload
@@ -22,12 +23,15 @@ const postingPetDevice = async (req, res, next) => {
         await newDevice.save();
 
 
-        res.status(201).json({ message: 'Pet device created successfully', petDevice: newDevice });
+        res.status(201).json({ status: true, message: 'Pet device added successfully', data: newDevice });
     }
     catch (err) {
         console.error('Error creating pet device:', err);
         res.status(500).json({ message: 'Internal Server Error' });
     }
+
+
+
 }
 //getting pet devices by userId
 const getAllPetDevicesbyUserId = async (req, res, next) => {
@@ -41,7 +45,7 @@ const getAllPetDevicesbyUserId = async (req, res, next) => {
         }
 
 
-        res.status(200).json({ petDevices });
+        res.status(200).json({ status: true, dataFound: true, data: petDevices });
     }
     catch (err) {
         console.error('Error fetching pet devices by userId:', err);
@@ -63,13 +67,15 @@ const getAPetDevice = async (req, res, next) => {
         }
 
 
-        res.status(200).json(petDevice);
+        res.status(200).json({ status: true, dataFound: true, data: petDevice });
     }
     catch (err) {
         console.error('Error fetching pet device by ID:', err);
         res.status(500).json({ message: 'Internal Server Error' });
     }
 }
+
+
 
 module.exports = {
     postingPetDevice,

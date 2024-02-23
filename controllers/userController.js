@@ -87,7 +87,7 @@ const register = async (req, res, next) => {
         email,
         password: hashedPassword,
         address,
-        token:null
+        token: null
     })
 
     try {
@@ -102,7 +102,7 @@ const register = async (req, res, next) => {
         token = jwt.sign(
             { userId: newUser.id, email: newUser.email },
             'supersecret_dont_share',
-            { expiresIn: '1h' }
+            { expiresIn: '24h' }
         );
     } catch (err) {
         const error = new HttpError(
@@ -112,7 +112,7 @@ const register = async (req, res, next) => {
         return next(error);
     }
 
-    res.status(201).json({ userId: newUser.id, email: newUser.email, token: token })
+    res.status(201).json({ message: "Successfully Registered", status: true, userId: newUser.id, email: newUser.email, accessToken: token })
 }
 
 //Logging of Users
@@ -168,7 +168,7 @@ const signin = async (req, res, next) => {
         token = jwt.sign(
             { userId: existingUser.id, email: existingUser.email },
             'supersecret_dont_share',
-            { expiresIn: '1h' }
+            { expiresIn: '24h' }
         );
     } catch (err) {
         const error = new HttpError(
@@ -178,7 +178,7 @@ const signin = async (req, res, next) => {
         return next(error);
     }
 
-    res.status(200).json({ existingUser, token: token });
+    res.status(200).json({ message: "Login Successfull", status: true, data: existingUser, token: token });
 
 
 }
@@ -203,7 +203,7 @@ const getUserbyId = async (req, res) => {
         console.log(id)
 
         const existingUser = await users.findOne({ _id: id })
-        res.status(200).json(existingUser)
+        res.status(200).json({ status: true, message: "User found", dataFound: true, data: existingUser })
         if (!existingUser) {
             const error = new HttpError(
                 'Could not find user, please try again.',
@@ -231,6 +231,7 @@ const forgetPassword = async (req, res, next) => {
 
             sendResetPasswordMail(existingUser.name, existingUser.email, randomString)
             res.status(200).json({
+                status: true,
                 message: "Please check your inbox of mail and reset your password",
                 token: randomString
             })
@@ -280,7 +281,7 @@ const resetPassword = async (req, res, next) => {
             existingUser.token = null
             try {
                 await existingUser.save()
-                res.status(200).json(existingUser)
+                res.status(200).json({message: "Password reset success",data:existingUser})
             }
             catch (err) {
                 console.log(err)
@@ -300,8 +301,8 @@ const resetPassword = async (req, res, next) => {
 }
 
 const logout = async (req, res) => {
-  
-    res.status(200).json({ message: 'Logout successful' });
+
+    res.status(200).json({status:true , message: 'Logout successful' });
 };
 
 module.exports = { logout };

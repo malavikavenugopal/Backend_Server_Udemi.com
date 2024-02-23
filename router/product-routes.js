@@ -21,6 +21,11 @@ router.post('/add', multerConfig.single('image'), [
    
 ], productController.postNewProduct)
 
+//Update the quantity of products
+router.patch('/update/:id',  [   
+    check('quantity').not().isEmpty(),   
+], productController.updateProductQuantity)
+
 //get all products
 router.get('/all-products',jwtMiddleware,productController.getAllProducts)
 
