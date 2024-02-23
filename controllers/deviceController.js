@@ -9,7 +9,7 @@ const devices = require('../models/deviceSchema')
 const postingPetDevice = async (req, res, next) => {
     const userId = req.payload
     console.log(userId)
-    const { petId, name, image } = req.body
+    const { petId, name } = req.body
 
     try {
 
@@ -17,7 +17,7 @@ const postingPetDevice = async (req, res, next) => {
             userId,
             petId,
             name,
-            image
+            image : req.file.filename 
         });
 
         await newDevice.save();

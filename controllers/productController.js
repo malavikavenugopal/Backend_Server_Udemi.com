@@ -28,7 +28,7 @@ const postNewProduct = async (req, res, next) => {
 
 
         await newProduct.save()
-        res.status(200).json({status:true,message:"Product added succesfully",newProduct})
+        res.status(200).json({status:true,message:"Product added successfully",newProduct})
     }
     catch (err) {
         const error = new HttpError(
