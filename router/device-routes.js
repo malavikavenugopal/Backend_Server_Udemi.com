@@ -15,5 +15,5 @@ router.post('/add',jwtMiddleware,multerConfig.single('image'), [
 //getting pet devices by userId
 router.get('/',jwtMiddleware,deviceController.getAllPetDevicesbyUserId)
 //get a particular pet devices
-router.get('/:id',jwtMiddleware,deviceController.getAPetDevice)
+router.get('/:deviceId',jwtMiddleware,deviceController.getAPetDevice)
 module.exports = router;

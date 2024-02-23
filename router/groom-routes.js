@@ -22,5 +22,5 @@ router.post('/add', multerConfig.single('image'), [
 router.get('/', jwtMiddleware, groomController.getAllGroomingPlaces)
 
 //get a particular grooming place
-router.get('/:id',jwtMiddleware,groomController.getAGroomingPlace)
+router.get('/:groomId',jwtMiddleware,groomController.getAGroomingPlace)
 module.exports = router;

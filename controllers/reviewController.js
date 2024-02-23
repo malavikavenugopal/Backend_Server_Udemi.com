@@ -16,7 +16,7 @@ const addDoctorReviews = async (req, res, next) => {
     }
     try {
         const userId = req.payload
-        const doctorId = req.params.id;
+        const doctorId = req.params.doctorId;
         const { rating, comment } = req.body;
 
         const user = await users.findById(userId)
@@ -51,7 +51,7 @@ const addDoctorReviews = async (req, res, next) => {
 const getDoctorReviewsbyId = async (req, res, next) => {
     try {
 
-        const doctorId = req.params.id;
+        const doctorId = req.params.doctorId;
 
         const doctor = await doctors.findById(doctorId);
         if (!doctor) {
@@ -94,7 +94,7 @@ const addBoardReviews = async (req, res, next) => {
     }
     try {
         const userId = req.payload
-        const boardId = req.params.id;
+        const boardId = req.params.boardId;
         const { rating, comment } = req.body;
 
         const user = await users.findById(userId)
@@ -128,7 +128,7 @@ const addBoardReviews = async (req, res, next) => {
 const getBoardReviewsbyId = async (req, res, next) => {
     try {
 
-        const boardId = req.params.id;
+        const boardId = req.params.boardId;
         console.log(boardId)
 
         const board = await boards.findById(boardId);
@@ -170,7 +170,7 @@ const addGroomReviews = async (req, res, next) => {
     }
     try {
         const userId = req.payload
-        const groomId = req.params.id;
+        const groomId = req.params.groomId;
         const { rating, comment } = req.body;
 
         const user = await users.findById(userId)
@@ -204,7 +204,7 @@ const addGroomReviews = async (req, res, next) => {
 const getGroomReviewsbyId = async (req, res, next) => {
     try {
 
-        const groomId = req.params.id;
+        const groomId = req.params.groomId;
       
 
         const groom = await grooms.findById(groomId);

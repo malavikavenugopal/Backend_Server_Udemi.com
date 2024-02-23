@@ -57,7 +57,7 @@ const getAllPetDevicesbyUserId = async (req, res, next) => {
 //get a particular pet devices
 const getAPetDevice = async (req, res, next) => {
 
-    const deviceId = req.params.id
+    const deviceId = req.params.deviceId
     try {
 
         const petDevice = await devices.findById(deviceId);

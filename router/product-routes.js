@@ -22,7 +22,7 @@ router.post('/add', multerConfig.single('image'), [
 ], productController.postNewProduct)
 
 //Update the quantity of products
-router.patch('/update/:id',  [   
+router.patch('/update/:productId',  [   
     check('quantity').not().isEmpty(),   
 ], productController.updateProductQuantity)
 
@@ -42,6 +42,6 @@ router.get('/all-accessories',jwtMiddleware,productController.getAllAccessories)
 router.get('/all-iot-devices',jwtMiddleware,productController.getAllIotDevices)
 
 //get Particular Product
-router.get('/:id',jwtMiddleware,productController.getParticularProduct)
+router.get('/:productId',jwtMiddleware,productController.getParticularProduct)
 
 module.exports = router;

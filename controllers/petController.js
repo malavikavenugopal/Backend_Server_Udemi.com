@@ -74,17 +74,14 @@ const editPet = async (req, res, next) => {
     const owner_Id = req.payload
 
     const { age, height, weight, info } = req.body
-
+console.log(req.params.petId)
 
     try {
         let pet;
 
-        pet = await pets.findById({ _id: req.params.id })
+        pet = await pets.findById({ _id: req.params.petId })
         console.log(pet);
-        if (pet.owner.toString() !== owner_Id) {
-
-            return next(new HttpError('You are not allowed to edit this pet info', 401));
-        }
+       
 
         pet.age = age ? age : pet.age
         pet.height = height ? height : pet.height
@@ -111,7 +108,7 @@ const editPet = async (req, res, next) => {
 const deletePet = async (req, res) => {
     let pet;
     try {
-        await pets.findOneAndDelete({ _id: req.params.id })
+        await pets.findOneAndDelete({ _id: req.params.petId })
         res.status(200).json({ status: true, message: "Deleted" })
     }
     catch (err) {

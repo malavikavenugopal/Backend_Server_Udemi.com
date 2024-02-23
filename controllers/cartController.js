@@ -75,7 +75,7 @@ const getCartItemsByUserId = async (req, res, next) => {
 const deleteCartItem = async (req, res, next) => {
 
     const userId = req.payload;
-    const itemId = req.params.id;
+    const itemId = req.params.itemId;
 
     try {
 

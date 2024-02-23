@@ -24,9 +24,9 @@ router.post('/add', jwtMiddleware, multerConfig.single('image'), [
 router.get('/',jwtMiddleware,petController.getPetsbyId)
 
 //edit pet info
-router.patch('/edit/:id',jwtMiddleware,petController.editPet)
+router.patch('/edit/:petId',jwtMiddleware,petController.editPet)
 
 //delete pet
-router.delete('/delete/:id',jwtMiddleware,petController.deletePet)
+router.delete('/delete/:petId',jwtMiddleware,petController.deletePet)
 
 module.exports = router;

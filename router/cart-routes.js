@@ -13,7 +13,7 @@ router.post('/add',jwtMiddleware,cartController.addToCart)
 router.get('/users',jwtMiddleware,cartController.getCartItemsByUserId)
 
 //delete cart item
-router.patch('/delete/:id',jwtMiddleware,cartController.deleteCartItem)
+router.patch('/delete/:itemId',jwtMiddleware,cartController.deleteCartItem)
 
 
 module.exports = router;

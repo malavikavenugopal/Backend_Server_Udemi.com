@@ -30,13 +30,13 @@ router.get('/',jwtMiddleware,veterinaryController.getAllDoctors)
 router.post('/book-appointment',jwtMiddleware,veterinaryController.bookingAppointment)
 
 //Get Booking Appointment list by user_Id
-router.get('/get-appointment',jwtMiddleware,veterinaryController.getAppointmentbyId)
+router.get('/get-appointments',jwtMiddleware,veterinaryController.getAppointmentbyId)
 
 //Get a Particular Appointment Details
-router.get('/get-appointment/:id',jwtMiddleware,veterinaryController.getParticularAppointment)
+router.get('/get-appointment/:appointmentId',jwtMiddleware,veterinaryController.getParticularAppointment)
 
 //Get a Particular Doctor details
-router.get('/:id',jwtMiddleware,veterinaryController.getParticularDoctorDetails)
+router.get('/:doctorId',jwtMiddleware,veterinaryController.getParticularDoctorDetails)
 
 
 module.exports = router;

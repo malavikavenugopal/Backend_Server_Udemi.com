@@ -49,7 +49,7 @@ const updateProductQuantity = async (req, res, next) => {
             new HttpError('Invalid inputs passed, please check your data.', 422)
         );
     }
-    const productId = req.params.id;
+    const productId = req.params.productId;
     const { quantity } = req.body;
     console.log(productId);
 
@@ -245,7 +245,7 @@ const getAllIotDevices = async (req, res, next) => {
 
 //get Particular Product 
 const getParticularProduct = async (req, res, next) => {
-    const id = req.params.id
+    const id = req.params.productId
     try {
         const product = await products.findById(id)
         if (!product) {

@@ -65,7 +65,7 @@ const getAllBoardingPlaces = async (req, res, next) => {
 }
 //get a particular boarding place
 const getABoardingPlace = async (req, res, next) => {
-    const boardId = req.params.id
+    const boardId = req.params.boardId
     try {
         const board = await boards.findById(boardId)
         res.status(200).json({ status: true, dataFound: true, data: board })

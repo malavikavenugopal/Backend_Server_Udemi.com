@@ -128,7 +128,7 @@ const getAppointmentbyId = async (req, res, next) => {
 
 //Get a Particular Appointment Details
 const getParticularAppointment = async (req, res, next) => {
-    const id = req.params.id
+    const id = req.params.appointmentId
 
     try {
         const appointmentList = await appointments.findOne({ _id: id })
@@ -155,7 +155,7 @@ const getParticularAppointment = async (req, res, next) => {
 //get a particular doctor details
 const  getParticularDoctorDetails =  async(req,res,next)=>{
 
-const id = req.params.id
+const id = req.params.doctorId
 
 try{
  const doctor = await doctors.findById(id)

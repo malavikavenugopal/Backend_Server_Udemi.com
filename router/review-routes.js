@@ -8,28 +8,28 @@ const { check } = require('express-validator')
 const router = express.Router();
 
 //add reviews(doctor)
-router.post('/doctor/add/:id', jwtMiddleware, [
+router.post('/doctor/add/:doctorId', jwtMiddleware, [
     check('rating').not().isEmpty()
 ], reviewController.addDoctorReviews)
 
 //get reviews by id(doctor)
-router.get('/doctor/:id',jwtMiddleware,reviewController.getDoctorReviewsbyId)
+router.get('/doctor/:doctorId',jwtMiddleware,reviewController.getDoctorReviewsbyId)
 
 //add reviews(board)
-router.post('/board/add/:id', jwtMiddleware, [
+router.post('/board/add/:boardId', jwtMiddleware, [
     check('rating').not().isEmpty()
 ], reviewController.addBoardReviews)
 
 //get reviews by id(board)
-router.get('/board/:id',jwtMiddleware,reviewController.getBoardReviewsbyId)
+router.get('/board/:boardId',jwtMiddleware,reviewController.getBoardReviewsbyId)
 
 //add reviews(groom)
-router.post('/groom/add/:id', jwtMiddleware, [
+router.post('/groom/add/:groomId', jwtMiddleware, [
     check('rating').not().isEmpty()
 ], reviewController.addGroomReviews)
 
 //get reviews by id(groom)
-router.get('/groom/:id',jwtMiddleware,reviewController.getGroomReviewsbyId)
+router.get('/groom/:groomId',jwtMiddleware,reviewController.getGroomReviewsbyId)
 
 
 module.exports = router;

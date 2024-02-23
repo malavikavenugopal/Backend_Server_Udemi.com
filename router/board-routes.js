@@ -23,5 +23,5 @@ router.get('/', jwtMiddleware, boardController.getAllBoardingPlaces)
 
 
 //get a particular boardingbplace
-router.get('/:id',jwtMiddleware,boardController.getABoardingPlace)
+router.get('/:boardId',jwtMiddleware,boardController.getABoardingPlace)
 module.exports = router;

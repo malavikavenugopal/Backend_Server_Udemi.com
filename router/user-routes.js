@@ -22,7 +22,7 @@ router.post('/signin', userController.signin)
 //Get All Users
 router.get('/', userController.getUsers)
 //Get All Users
-router.get('/id',jwtMiddleware, userController.getUserbyId)
+router.get('/profile',jwtMiddleware, userController.getUserbyId)
 //Forget Password
 router.post('/forget-password',userController.forgetPassword)
 //Reset Password

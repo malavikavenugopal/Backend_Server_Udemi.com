@@ -66,7 +66,7 @@ const getAllGroomingPlaces = async (req, res, next) => {
 
 //get a particular Grooming place
 const getAGroomingPlace = async (req, res, next) => {
-    const groomId = req.params.id
+    const groomId = req.params.groomId
     try {
         const groom = await grooms.findById(groomId)
         res.status(200).json({ status: true, dataFound: true, data: groom })
